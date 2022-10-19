@@ -1,13 +1,13 @@
 import logo from '../../assets/images/logo.png'
 import styled from 'styled-components'
-import { secondaryColor } from '../../constants/colors'
+import { secondaryColor, disabled } from '../../constants/colors'
 import { Link } from 'react-router-dom'
 
 function LoginPage() {
     return (
         <Page>
             <>
-                <img src={logo}></img>
+                <img src={logo} alt='logo'></img>
                 <input type='text' placeholder='email'/>
                 <input type='text' placeholder='senha'/>
                 <button>Entrar</button>
@@ -39,7 +39,7 @@ const Page = styled.div`
         box-sizing: border-box;
 
         &::placeholder {
-            color: #DBDBDB;
+            color: ${disabled};
         }
     }
 
