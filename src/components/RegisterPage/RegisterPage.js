@@ -39,7 +39,7 @@ function RegisterPage() {
         axios
         .post(`${apiURL}/auth/sign-up`, form)
         .then((user) => {
-            console.log(user)
+            navigate('/')
         })
         .catch((err) => {
             alert(err.response.data.message)

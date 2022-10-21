@@ -2,7 +2,6 @@ import logo from '../../assets/images/logo.png'
 import styled from 'styled-components'
 import { secondaryColor, disabled } from '../../constants/colors'
 import { Link, useNavigate } from 'react-router-dom'
-import { Navigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
 import { ThreeDots } from 'react-loader-spinner'
@@ -11,7 +10,7 @@ import apiURL from '../../constants/URL'
 
 
 
-function LoginPage() {
+function LoginPage({setToken}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -37,11 +36,10 @@ function LoginPage() {
         )
 
         axios
-        .post(`${apiURL}/auth/login`, {email: email, password: password})
+        .post(`${apiURL}/auth/login`, {email, password})
         .then((user) => {
+            setToken(user.data.token)
             navigate('/hoje')
-            console.log(user)   
-
         })
         .catch((err) => {
             alert(err.response.data.message)
