@@ -6,12 +6,15 @@ import checkMark from "../../assets/images/checkMark.png"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import apiURL from "../../constants/URL"
+import dayjs from "dayjs"
+
+const date = dayjs()
+const weekDay = date.$W
 
 function TodayPage({token}) {
     const [arr, setArr] = useState([])
     const [habitsDone, setHabitsDone] = useState([])
     const [allHabits, setAllHabits] = useState([])
-
 
     const config = {
         headers: {
@@ -72,17 +75,36 @@ function TodayPage({token}) {
     }, [habitsDone])
 
 
+
     return (
-        <Today onClick={() => console.log(allHabits, habitsDone)}>
+        <Today onClick={() => console.log(date.$W)}>
             <Header />
             <HabitContainer>
-                <h1>Segunda, 17/05</h1>
+                <h1>{<SetWeekDay />}, {date.$D}/{date.$M}</h1>
                 <h3> {habitsDone.length === 0 ? 'nenhum hábito concluído ainda' : `${Math.round((habitsDone.length)/(allHabits.length)*100)}% dos hábitos concluídos`} </h3>
                 {arr}
             </HabitContainer>
             <Footer />
         </Today>
     )
+}
+
+function SetWeekDay() {
+    if (weekDay === 1) {
+        return 'Domingo'
+    } else if (weekDay === 2) {
+        return 'Segunda'
+    } else if (weekDay === 3) {
+        return 'Terça'
+    } else if (weekDay === 4) {
+        return 'Quarta'
+    } else if (weekDay === 5) {
+        return 'Quinta'
+    } else if (weekDay === 6) {
+        return 'Sexta'
+    } else if (weekDay === 7) {
+        return 'Sábado'
+    }
 }
 
 export default TodayPage
