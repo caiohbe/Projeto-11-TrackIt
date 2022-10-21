@@ -4,6 +4,7 @@ import GlobalStyle from "./assets/styles/globalStyles";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import HabitsPage from "./components/HabitsPage/HabitsPage";
 import TodayPage from "./components/TodayPage/TodayPage";
+import HistoryPage from "./components/HistoryPage/HistoryPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/cadastro" element={<RegisterPage />} />
         <Route path="/habitos" element={<HabitsPage />} />
         <Route path="/hoje" element={<TodayPage />} />
+        <Route path="/historico" element={<HistoryPage />} />
       </Routes>
     </BrowserRouter>
   );

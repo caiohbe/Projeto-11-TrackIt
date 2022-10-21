@@ -1,23 +1,67 @@
 import logo from '../../assets/images/logo.png'
 import styled from 'styled-components'
 import { secondaryColor, disabled } from '../../constants/colors'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import axios from 'axios'
+import apiURL from '../../constants/URL'
+import { ThreeDots } from 'react-loader-spinner'
+import 'react-loader-spinner'
 
 function RegisterPage() {
-    return (
-        <Page>
-            <>
-                <img src={logo} alt='logo'></img>
-                <input type='text' placeholder='email'/>
-                <input type='text' placeholder='senha'/>
-                <input type='text' placeholder='nome'/>
-                <input type='text' placeholder='URL foto'/>
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [name, setName] = useState('')
+    const [image, setImage] = useState('')
 
-                <button>Cadastrar</button>
-                <Link>
-                    <h3>Já tem uma conta? Faça login!</h3>
-                </Link>
-            </>
+    const [registerText, setRegisterText] = useState('Cadastrar')
+
+    const navigate = useNavigate()
+
+    function register(event) {
+        event.preventDefault()
+
+        setRegisterText(
+            <ThreeDots 
+                height="80" 
+                width="80" 
+                radius="9"
+                color="#FFFFFF" 
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+            />
+        )
+
+        const form = {email, name, image, password}
+
+        axios
+        .post(`${apiURL}/auth/sign-up`, form)
+        .then((user) => {
+            console.log(user)
+        })
+        .catch((err) => {
+            alert(err.response.data.message)
+
+            setRegisterText('Cadastrar')
+        })
+        
+    }
+
+    return (
+        <Page registerText={registerText}>
+            <img src={logo} alt='logo'></img>
+            <form onSubmit={register}>
+                <input disabled={registerText !== 'Cadastrar'} onChange={e => setEmail(e.target.value)} required type='email' placeholder='email'/>
+                <input disabled={registerText !== 'Cadastrar'} onChange={e => setPassword(e.target.value)} required type='password' placeholder='senha'/>
+                <input disabled={registerText !== 'Cadastrar'} onChange={e => setName(e.target.value)} required type='text' placeholder='nome'/>
+                <input disabled={registerText !== 'Cadastrar'} onChange={e => setImage(e.target.value)} required type='url' placeholder='URL foto'/>
+                <button type='submit'>{registerText}</button>
+            </form>
+            
+            <StyledLink to={'/'}>Já tem uma conta? Faça login!</StyledLink>
+
         </Page>
     )
 }
@@ -40,6 +84,7 @@ const Page = styled.div`
         border: 1px solid #D4D4D4;
         padding-left: 11px;
         box-sizing: border-box;
+        color: ${props => props.registerText === 'Cadastrar' ? '#000000' : '#AFAFAF'};
 
         &::placeholder {
             color: ${disabled};
@@ -58,10 +103,21 @@ const Page = styled.div`
         background-color: ${secondaryColor};
         color: #FFFFFF;
         margin-bottom: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: ${props => props.registerText === 'Cadastrar' ? 1 : 0.7};
     }
 
-    h3 {
-        font-size: 14px;
-        color: ${secondaryColor};
+    form {        
+        width:100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;   
     }
+`
+
+const StyledLink = styled(Link)`
+    font-size: 14px;
+    color: ${secondaryColor};
 `

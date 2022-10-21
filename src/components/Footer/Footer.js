@@ -14,6 +14,7 @@ function Footer() {
 export default Footer
 
 const Bottom = styled.div`
+    z-index: 1;
     height: 70px;
     width: 100vw;
     background-color: #FFFFFF;

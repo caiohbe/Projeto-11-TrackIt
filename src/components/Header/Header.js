@@ -14,6 +14,7 @@ function Header() {
 export default Header
 
 const Top = styled.div`
+    z-index: 1;
     width: 100vw;
     height: 70px;
     background-color: ${mainColor};
