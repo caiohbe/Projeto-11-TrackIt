@@ -10,6 +10,8 @@ import apiURL from "../../constants/URL"
 function TodayPage({token}) {
     const [arr, setArr] = useState([])
     const [habitsDone, setHabitsDone] = useState([])
+    const [allHabits, setAllHabits] = useState([])
+
 
     const config = {
         headers: {
@@ -37,10 +39,11 @@ function TodayPage({token}) {
     useEffect(() => {
         axios.get(`${apiURL}/habits/today`, config)
         .then((teste) => {
+            setAllHabits(teste.data)
+
             setArr(teste.data.map((item) => {
 
                 if (item.done && !habitsDone.includes(item.id)) {
-                    console.log(item.id)
                     setHabitsDone([...habitsDone, item.id])
                 }
 
@@ -70,11 +73,11 @@ function TodayPage({token}) {
 
 
     return (
-        <Today>
+        <Today onClick={() => console.log(allHabits, habitsDone)}>
             <Header />
             <HabitContainer>
                 <h1>Segunda, 17/05</h1>
-                <h3>nenhum hábito concluído ainda</h3>
+                <h3> {habitsDone.length === 0 ? 'nenhum hábito concluído ainda' : `${Math.round((habitsDone.length)/(allHabits.length)*100)}% dos hábitos concluídos`} </h3>
                 {arr}
             </HabitContainer>
             <Footer />
@@ -149,7 +152,7 @@ const Habit = styled.div`
     }
 
     span {
-        color: ${props => props.done? {done} : {textColor}};
+        color: ${props => props.habitsDone.includes(props.id) ? '#8FC549' : {textColor}};
     }
 
     p {
