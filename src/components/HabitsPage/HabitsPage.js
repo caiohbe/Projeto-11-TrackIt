@@ -2,12 +2,104 @@ import Header from "../Header/Header"
 import styled from "styled-components"
 import { mainColor, secondaryColor, textColor, disabled } from "../../constants/colors"
 import Footer from "../Footer/Footer"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import apiURL from "../../constants/URL"
+import thrash from '../../assets/images/thrash.png'
 
-function HabitsPage() {
+function HabitsPage({ token }) {
+    const [arr, setArr] = useState([])
+    const [habitIds, setHabitIds] = useState([])
+    const [visible, setVisible] = useState(false)
+    const [deletedHabit, setDeletedHabit] = useState('')
+
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    useEffect(() => {
+        axios
+        .get(`${apiURL}/habits`, config)
+        .then((habits) => {
+            console.log(habits)
+            setArr(habits.data.map((habit) => {
+
+                if (!habitIds.includes(habit.id)) {
+                    setHabitIds([...habitIds, habit.id])
+
+                }
+
+                const dayButtons = [
+                    <button>D</button>,
+                    <button>S</button>,
+                    <button>T</button>,
+                    <button>Q</button>,
+                    <button>Q</button>,
+                    <button>S</button>,
+                    <button>S</button>
+                ]
+
+                const days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+
+                habit.days.forEach((d) => {
+                    dayButtons[d] = <button className="selected">{days[d]}</button>
+                })
+
+                return (
+                    <Habit id={habit.id}>
+                        {habit.name}
+                        
+                        <div>
+                            {dayButtons}
+                        </div>
+
+                        <img onClick={() => {
+                            setVisible(!visible)
+                            setDeletedHabit(habit.id)
+                        }} src={thrash} alt='thrash' />
+                </Habit>
+                )
+            }))
+        })
+    }, [habitIds])
+
+    function deleteHabit (id) {
+        setVisible(!visible)
+        console.log(id) 
+    
+        axios
+        .delete(`${apiURL}/habits/${id}`, config)
+        .then(() => {
+            const newHabits = habitIds.filter((h) => {
+                if(h !== id) {
+                    return true
+                }
+            })
+
+            setHabitIds(newHabits)
+        })
+    
+    }
+
     return (
         <Habits>
+            <DeleteHabit visible={visible}>
+                <div className="background"></div>
+
+                <div className="text">
+                    <p>Você realmente deseja remover esse hábito?</p>
+                    <div className="buttons">
+                        <button onClick={() => setVisible(!visible)}>Cancelar</button>
+                        <button onClick={() => deleteHabit(deletedHabit)}>Confirmar</button>
+                    </div>
+                </div>
+                
+            </DeleteHabit>
             <Header />
-            <AddHabit>
+            <AddHabit onClick={() => console.log(arr, habitIds)}>
                 <h1>Meus hábitos</h1>
                 <button>+</button>
             </AddHabit>
@@ -30,7 +122,10 @@ function HabitsPage() {
                         <button>Salvar</button>
                     </Buttons>
                 </CreatingHabit>
-                <h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>
+
+                {arr}
+
+                <h2>{arr.length === 0 ? 'Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!' : ''}</h2>
             </MyHabits>
             <Footer />
         </Habits>
@@ -38,14 +133,110 @@ function HabitsPage() {
     )
 }
 
+
+
 export default HabitsPage
+
+const DeleteHabit = styled.div`
+    display: ${props => props.visible ? 'flex' : 'none'};
+    justify-content: center;
+
+    .background {
+        position: fixed;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background-color: #666666;
+        opacity: 0.5;
+    }
+
+    .text {
+        position: fixed;
+        z-index: 2;
+        height: 90px;
+        background-color: #FFFFFF;
+        top: 160px;
+        padding: 20px;
+        border-radius: 12px;
+        position: relative;
+    }
+
+    .buttons {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 20px;
+
+        button {
+            font-family: 'Lexend Deca';
+            margin-left: 20px;
+            width: 85px;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        & button:nth-child(1) {
+            background-color: #FFFFFF;
+            color: ${secondaryColor};
+        }
+
+        & button:nth-child(2) {
+            background-color: ${secondaryColor};
+            color: #FFFFFF;
+        }
+    }
+`
+
+const Habit = styled.div`
+    margin-bottom: 10px;
+    font-size: 20px;
+    line-height: 25px;
+    padding: 12px;
+    position: relative;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    height: 90px;
+    border-radius: 12px;
+    display:  flex;
+    flex-direction: column;
+
+    .selected {
+        background: #CFCFCF;
+        color: #FFFFFF;
+        border: none;
+    }
+
+    img {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    button {
+        width: 30px;
+        height: 30px;
+        margin: 4px;
+        margin-left: 0px;
+        margin-right: 8px;
+        color: ${disabled};
+        border: 1px solid ${disabled};
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    div {
+        display: flex;
+    }
+`
 
 const Habits = styled.div`
     background-color: #E5E5E5;
     width: 100vw;
     height: 100vh;
     margin-top: 70px;    
-    margin-bottom: 70px;
+    padding-bottom: 200px;
     font-family: 'Lexend Deca';
 
 `
@@ -109,6 +300,8 @@ const WeekDays = styled.div`
         width: 30px;
         height: 30px;
         margin: 4px;
+        margin-left: 0px;
+        margin-right: 8px;
         color: ${disabled};
         border: 1px solid ${disabled};
         background-color: #FFFFFF;

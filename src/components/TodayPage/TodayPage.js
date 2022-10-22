@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import apiURL from "../../constants/URL"
 import dayjs from "dayjs"
+import { useNavigate } from "react-router-dom"
 
 const date = dayjs()
 const weekDay = date.$W
@@ -15,6 +16,7 @@ function TodayPage({token}) {
     const [arr, setArr] = useState([])
     const [habitsDone, setHabitsDone] = useState([])
     const [allHabits, setAllHabits] = useState([])
+    const navigate = useNavigate()
 
     const config = {
         headers: {
@@ -77,9 +79,9 @@ function TodayPage({token}) {
 
 
     return (
-        <Today onClick={() => console.log(date.$W)}>
+        <Today>
             <Header />
-            <HabitContainer>
+            <HabitContainer onClick={() => navigate('/habitos')}>
                 <h1>{<SetWeekDay />}, {date.$D}/{date.$M}</h1>
                 <h3> {habitsDone.length === 0 ? 'nenhum hábito concluído ainda' : `${Math.round((habitsDone.length)/(allHabits.length)*100)}% dos hábitos concluídos`} </h3>
                 {arr}
