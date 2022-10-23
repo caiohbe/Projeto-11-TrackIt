@@ -11,8 +11,12 @@ function HabitsPage({ token }) {
     const [arr, setArr] = useState([])
     const [habitIds, setHabitIds] = useState([])
     const [visible, setVisible] = useState(false)
+    const [visibleInput, setVisibleInput] = useState(false)
     const [deletedHabit, setDeletedHabit] = useState('')
+    const [habitName, setHabitName] = useState('')
+    const [dayNumber, setDayNumber] = useState([])
 
+    const days = [['D', 0], ['S', 1], ['T', 2], ['Q', 3], ['Q', 4], ['S', 5], ['S', 6]]
 
     const config = {
         headers: {
@@ -42,10 +46,10 @@ function HabitsPage({ token }) {
                     <button>S</button>
                 ]
 
-                const days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+                
 
                 habit.days.forEach((d) => {
-                    dayButtons[d] = <button className="selected">{days[d]}</button>
+                    dayButtons[d] = <button className="selected">{days[d][0]}</button>
                 })
 
                 return (
@@ -84,6 +88,38 @@ function HabitsPage({ token }) {
     
     }
 
+    function saveHabit(name, days) {
+        if (name === '') {
+            alert('Hábito sem nome')
+            return
+        } else if (days.length === 0) {
+            alert('Selecione os dias da semana')
+            return
+        }
+
+        const habit = {
+            name,
+            days: days.sort()
+        }
+
+        console.log(name, days)
+
+        // axios.
+        // post(`${apiURL}/habits`, habit, config)
+    }
+
+    function daySwitch(num) {
+        if (!dayNumber.includes(num)) {
+            setDayNumber([...dayNumber, num])
+        } else {
+            setDayNumber(dayNumber.filter((d) => {
+                if (d !== num) {
+                    return true
+                }
+            }))
+        }
+    }
+
     return (
         <Habits>
             <DeleteHabit visible={visible}>
@@ -101,25 +137,23 @@ function HabitsPage({ token }) {
             <Header />
             <AddHabit onClick={() => console.log(arr, habitIds)}>
                 <h1>Meus hábitos</h1>
-                <button>+</button>
+                <button onClick={() => setVisibleInput(true)}>+</button>
             </AddHabit>
             <MyHabits>
-                <CreatingHabit>
-                    <input type='text' placeholder='nome do hábito' />
+                <CreatingHabit visibleInput={visibleInput}>
+                    <input onChange={(e) => setHabitName(e.target.value)} type='text' placeholder='nome do hábito' />
 
-                    <WeekDays>
-                        <button>D</button>
-                        <button>S</button>
-                        <button>T</button>
-                        <button>Q</button>
-                        <button>Q</button>
-                        <button>S</button>
-                        <button>S</button>
-                    </WeekDays>
+                    <div>
+                        {days.map((day, i) => {
+                            return (
+                                <StyledButton key={i} dayNumber={dayNumber} dayIndex={i} onClick={() => daySwitch(i)}>{day[0]}</StyledButton>
+                            )
+                        })}
+                    </div>
 
                     <Buttons>
-                        <button>Cancelar</button>
-                        <button>Salvar</button>
+                        <button onClick={() => setVisibleInput(false)}>Cancelar</button>
+                        <button onClick={() => saveHabit(habitName, dayNumber)}>Salvar</button>
                     </Buttons>
                 </CreatingHabit>
 
@@ -136,6 +170,19 @@ function HabitsPage({ token }) {
 
 
 export default HabitsPage
+
+const StyledButton = styled.button`
+        width: 30px;
+        height: 30px;
+        margin: 4px;
+        margin-left: 0px;
+        margin-right: 8px;
+        color: ${props => props.dayNumber.includes(props.dayIndex) ? '#FFFFFF' : disabled};
+        border: 1px solid ${disabled};
+        background-color: ${props => props.dayNumber.includes(props.dayIndex) ? '#CFCFCF' : '#FFFFFF'};
+        border-radius: 5px;
+        font-size: 20px;
+`
 
 const DeleteHabit = styled.div`
     display: ${props => props.visible ? 'flex' : 'none'};
@@ -277,6 +324,7 @@ const CreatingHabit = styled.div`
     position: relative;
     margin-bottom: 35px;
     border-radius: 12px;
+    display: ${props => props.visibleInput ? '' : 'none'};
 
     input {
         height: 45px;
@@ -292,21 +340,6 @@ const CreatingHabit = styled.div`
             font-family: 'Lexend Deca';
             color: ${disabled};
         }
-    }
-`
-
-const WeekDays = styled.div`
-    button {
-        width: 30px;
-        height: 30px;
-        margin: 4px;
-        margin-left: 0px;
-        margin-right: 8px;
-        color: ${disabled};
-        border: 1px solid ${disabled};
-        background-color: #FFFFFF;
-        border-radius: 5px;
-        font-size: 20px;
     }
 `
 
