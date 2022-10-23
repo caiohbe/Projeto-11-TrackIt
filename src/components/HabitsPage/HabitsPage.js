@@ -68,7 +68,8 @@ function HabitsPage({ token }) {
                 )
             }))
         })
-    }, [habitIds])
+
+    }, [habitIds, visibleInput])
 
     function deleteHabit (id) {
         setVisible(!visible)
@@ -84,8 +85,7 @@ function HabitsPage({ token }) {
             })
 
             setHabitIds(newHabits)
-        })
-    
+        })    
     }
 
     function saveHabit(name, days) {
@@ -104,8 +104,13 @@ function HabitsPage({ token }) {
 
         console.log(name, days)
 
-        // axios.
-        // post(`${apiURL}/habits`, habit, config)
+        axios.
+        post(`${apiURL}/habits`, habit, config)
+        .then(() => {
+            setVisibleInput(false)
+        })
+
+        
     }
 
     function daySwitch(num) {
@@ -185,6 +190,11 @@ const StyledButton = styled.button`
 `
 
 const DeleteHabit = styled.div`
+    position: fixed;
+    z-index: 3;
+    height: 100vh;
+    width: 100vw;
+
     display: ${props => props.visible ? 'flex' : 'none'};
     justify-content: center;
 
@@ -279,10 +289,8 @@ const Habit = styled.div`
 `
 
 const Habits = styled.div`
-    background-color: #E5E5E5;
-    width: 100vw;
-    height: 100vh;
     margin-top: 70px;    
+    margin-bottom: 0px;
     padding-bottom: 200px;
     font-family: 'Lexend Deca';
 

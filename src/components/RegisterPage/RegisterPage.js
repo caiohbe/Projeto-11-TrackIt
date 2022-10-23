@@ -70,7 +70,9 @@ export default RegisterPage
 
 const Page = styled.div`
     font-family: 'Lexend Deca', sans-serif;
-
+    background-color: #FFFFFF;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;

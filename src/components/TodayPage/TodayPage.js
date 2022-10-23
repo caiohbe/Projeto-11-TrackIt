@@ -73,6 +73,7 @@ function TodayPage({token}) {
                 )
             }))
         })
+        .catch((err) => console.log(err.message))
 
     }, [habitsDone])
 
@@ -80,8 +81,8 @@ function TodayPage({token}) {
 
     return (
         <Today>
-            <Header />
-            <HabitContainer onClick={() => navigate('/habitos')}>
+            <Header/>
+            <HabitContainer  onClick={() => navigate('/habitos')} habitsDone={habitsDone}>
                 <h1>{<SetWeekDay />}, {date.$D}/{date.$M}</h1>
                 <h3> {habitsDone.length === 0 ? 'nenhum hábito concluído ainda' : `${Math.round((habitsDone.length)/(allHabits.length)*100)}% dos hábitos concluídos`} </h3>
                 {arr}
@@ -92,19 +93,19 @@ function TodayPage({token}) {
 }
 
 function SetWeekDay() {
-    if (weekDay === 1) {
+    if (weekDay === 0) {
         return 'Domingo'
-    } else if (weekDay === 2) {
+    } else if (weekDay === 1) {
         return 'Segunda'
-    } else if (weekDay === 3) {
+    } else if (weekDay === 2) {
         return 'Terça'
-    } else if (weekDay === 4) {
+    } else if (weekDay === 3) {
         return 'Quarta'
-    } else if (weekDay === 5) {
+    } else if (weekDay === 4) {
         return 'Quinta'
-    } else if (weekDay === 6) {
+    } else if (weekDay === 5) {
         return 'Sexta'
-    } else if (weekDay === 7) {
+    } else if (weekDay === 6) {
         return 'Sábado'
     }
 }
@@ -112,9 +113,6 @@ function SetWeekDay() {
 export default TodayPage
 
 const Today = styled.div`
-    background-color: #E5E5E5;
-    width: 100vw;
-    height: 100vh;
     margin-top: 70px;    
     margin-bottom: 70px;
     font-family: 'Lexend Deca';
@@ -133,7 +131,7 @@ const HabitContainer = styled.div`
 
     h3 {
         font-size: 18px;
-        color: ${notDone};
+        color: ${props => props.habitsDone.length === 0 ? '#BABABA' : '#8FC549'};
         margin-bottom: 20px;
     }
 `

@@ -46,6 +46,9 @@ const GlobalStyle = createGlobalStyle`
     }
     box-sizing: border-box;
     flex-shrink: 0;
+    body {
+        background-color: #E5E5E5;
+    }
 `
 
 export default GlobalStyle
