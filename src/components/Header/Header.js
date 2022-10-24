@@ -9,7 +9,7 @@ function Header() {
 
     return (
         <Top>
-            <img src={trackIt} alt='logo'/>
+            <img data-identifier="avatar" src={trackIt} alt='logo'/>
             <img className="perfilImage" src={image} alt="userImage" />
         </Top>
     )

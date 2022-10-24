@@ -53,18 +53,18 @@ function HabitsPage({ token }) {
                 })
 
                 return (
-                    <Habit id={habit.id}>
+                    <Habit data-identifier="habit-name" id={habit.id}>
                         {habit.name}
                         
                         <div>
                             {dayButtons}
                         </div>
 
-                        <img onClick={() => {
+                        <img data-identifier="delete-habit-btn" onClick={() => {
                             setVisible(!visible)
                             setDeletedHabit(habit.id)
                         }} src={thrash} alt='thrash' />
-                </Habit>
+                    </Habit>
                 )
             }))
         })
@@ -142,29 +142,29 @@ function HabitsPage({ token }) {
             <Header />
             <AddHabit onClick={() => console.log(arr, habitIds)}>
                 <h1>Meus hábitos</h1>
-                <button onClick={() => setVisibleInput(true)}>+</button>
+                <button data-identifier="create-habit-btn" onClick={() => setVisibleInput(true)}>+</button>
             </AddHabit>
             <MyHabits>
                 <CreatingHabit visibleInput={visibleInput}>
-                    <input onChange={(e) => setHabitName(e.target.value)} type='text' placeholder='nome do hábito' />
+                    <input data-identifier="input-habit-name" onChange={(e) => setHabitName(e.target.value)} type='text' placeholder='nome do hábito' />
 
                     <div>
                         {days.map((day, i) => {
                             return (
-                                <StyledButton key={i} dayNumber={dayNumber} dayIndex={i} onClick={() => daySwitch(i)}>{day[0]}</StyledButton>
+                                <StyledButton data-identifier="week-day-btn" key={i} dayNumber={dayNumber} dayIndex={i} onClick={() => daySwitch(i)}>{day[0]}</StyledButton>
                             )
                         })}
                     </div>
 
                     <Buttons>
-                        <button onClick={() => setVisibleInput(false)}>Cancelar</button>
-                        <button onClick={() => saveHabit(habitName, dayNumber)}>Salvar</button>
+                        <button data-identifier="cancel-habit-create-btn" onClick={() => setVisibleInput(false)}>Cancelar</button>
+                        <button data-identifier="save-habit-create-btn" onClick={() => saveHabit(habitName, dayNumber)}>Salvar</button>
                     </Buttons>
                 </CreatingHabit>
 
                 {arr}
 
-                <h2>{arr.length === 0 ? 'Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!' : ''}</h2>
+                <h2 data-identifier="no-habit-message" >{arr.length === 0 ? 'Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!' : ''}</h2>
             </MyHabits>
             <Footer />
         </Habits>

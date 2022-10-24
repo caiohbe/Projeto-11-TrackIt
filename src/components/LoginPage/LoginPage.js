@@ -52,12 +52,12 @@ function LoginPage({setToken}) {
         <Page loginText={loginText}>
             <img src={logo} alt='logo'></img>
             <form onSubmit={login}>
-                <input disabled={loginText !== 'Entrar'} onChange={e => setEmail(e.target.value)} required type='email' placeholder='email'/>
-                <input disabled={loginText !== 'Entrar'} onChange={e => setPassword(e.target.value)} required type='password' placeholder='senha'/>
-                <button type='submit'>{loginText}</button>
+                <input data-identifier="input-email" disabled={loginText !== 'Entrar'} onChange={e => setEmail(e.target.value)} required type='email' placeholder='email'/>
+                <input data-identifier="input-password" disabled={loginText !== 'Entrar'} onChange={e => setPassword(e.target.value)} required type='password' placeholder='senha'/>
+                <button data-identifier="login-btn" type='submit'>{loginText}</button>
             </form>
 
-            <StyledLink to={'/cadastro'}>
+            <StyledLink data-identifier="sign-up-action" to={'/cadastro'}>
                 <h3>Não tem uma conta? Cadastre-se!</h3>
             </StyledLink>
         </Page>

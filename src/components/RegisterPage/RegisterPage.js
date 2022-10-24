@@ -53,14 +53,14 @@ function RegisterPage() {
         <Page registerText={registerText}>
             <img src={logo} alt='logo'></img>
             <form onSubmit={register}>
-                <input disabled={registerText !== 'Cadastrar'} onChange={e => setEmail(e.target.value)} required type='email' placeholder='email'/>
-                <input disabled={registerText !== 'Cadastrar'} onChange={e => setPassword(e.target.value)} required type='password' placeholder='senha'/>
-                <input disabled={registerText !== 'Cadastrar'} onChange={e => setName(e.target.value)} required type='text' placeholder='nome'/>
-                <input disabled={registerText !== 'Cadastrar'} onChange={e => setImage(e.target.value)} required type='url' placeholder='URL foto'/>
+                <input data-identifier="input-email" disabled={registerText !== 'Cadastrar'} onChange={e => setEmail(e.target.value)} required type='email' placeholder='email'/>
+                <input data-identifier="input-password" disabled={registerText !== 'Cadastrar'} onChange={e => setPassword(e.target.value)} required type='password' placeholder='senha'/>
+                <input data-identifier="input-name" disabled={registerText !== 'Cadastrar'} onChange={e => setName(e.target.value)} required type='text' placeholder='nome'/>
+                <input data-identifier="input-photo" disabled={registerText !== 'Cadastrar'} onChange={e => setImage(e.target.value)} required type='url' placeholder='URL foto'/>
                 <button type='submit'>{registerText}</button>
             </form>
             
-            <StyledLink to={'/'}>Já tem uma conta? Faça login!</StyledLink>
+            <StyledLink data-identifier="back-to-login-action" to={'/'}>Já tem uma conta? Faça login!</StyledLink>
 
         </Page>
     )

@@ -56,7 +56,9 @@ function TodayPage({token}) {
                 }
 
                 return (
-                    <Habit habitsDone={habitsDone}
+                    <Habit 
+                    data-identifier="today-infos"
+                    habitsDone={habitsDone}
                     currentSequence={item.currentSequence} 
                     highestSequence={item.highestSequence} 
                     id={item.id} key={item.id} 
@@ -69,7 +71,7 @@ function TodayPage({token}) {
                             Seu recorde: <StyledSpan>{item.highestSequence}</StyledSpan>
                         </h2>
 
-                        <div>
+                        <div data-identifier="done-habit-btn">
                             <img src={checkMark} alr="checkMark" />
                         </div>
                     </Habit>
@@ -86,8 +88,8 @@ function TodayPage({token}) {
         <Today>
             <Header/>
             <HabitContainer habitsDone={habitsDone}>
-                <h1>{<SetWeekDay />}, {date.$D}/{date.$M + 1}</h1>
-                <h3> {habitsDone.length === 0 ? 'nenhum hábito concluído ainda' : `${Math.round((habitsDone.length)/(allHabits.length)*100)}% dos hábitos concluídos`} </h3>
+                <h1 data-identifier="today-infos" >{<SetWeekDay />}, {date.$D}/{date.$M + 1}</h1>
+                <h3 data-identifier="today-infos"> {habitsDone.length === 0 ? 'nenhum hábito concluído ainda' : `${Math.round((habitsDone.length)/(allHabits.length)*100)}% dos hábitos concluídos`} </h3>
                 {arr}
             </HabitContainer>
             <Footer />
