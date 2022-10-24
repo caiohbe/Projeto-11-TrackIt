@@ -1,13 +1,13 @@
 import styled from "styled-components"
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer"
-import { mainColor, notDone, done, textColor } from "../../constants/colors"
+import { mainColor, done, textColor } from "../../constants/colors"
 import checkMark from "../../assets/images/checkMark.png"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import apiURL from "../../constants/URL"
 import dayjs from "dayjs"
-import { useNavigate } from "react-router-dom"
+import { AuthContext } from "../../contexts/auth"
 
 const date = dayjs()
 const weekDay = date.$W
@@ -16,7 +16,10 @@ function TodayPage({token}) {
     const [arr, setArr] = useState([])
     const [habitsDone, setHabitsDone] = useState([])
     const [allHabits, setAllHabits] = useState([])
-    const navigate = useNavigate()
+
+    const { setPercentage } = useContext(AuthContext)
+    setPercentage(Math.round((habitsDone.length)/(allHabits.length)*100))
+
 
     const config = {
         headers: {
@@ -82,8 +85,8 @@ function TodayPage({token}) {
     return (
         <Today>
             <Header/>
-            <HabitContainer  onClick={() => navigate('/habitos')} habitsDone={habitsDone}>
-                <h1>{<SetWeekDay />}, {date.$D}/{date.$M}</h1>
+            <HabitContainer habitsDone={habitsDone}>
+                <h1>{<SetWeekDay />}, {date.$D}/{date.$M + 1}</h1>
                 <h3> {habitsDone.length === 0 ? 'nenhum hábito concluído ainda' : `${Math.round((habitsDone.length)/(allHabits.length)*100)}% dos hábitos concluídos`} </h3>
                 {arr}
             </HabitContainer>

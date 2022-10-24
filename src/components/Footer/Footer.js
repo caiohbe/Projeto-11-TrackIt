@@ -1,12 +1,35 @@
 import styled from "styled-components"
 import { secondaryColor } from "../../constants/colors"
+import { useNavigate } from "react-router-dom"
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { AuthContext} from '../../contexts/auth'
+import React, { useContext } from "react";
+
 
 function Footer() {
+    const navigate = useNavigate()
+
+    const { percentage } = useContext(AuthContext)
+
     return (
         <Bottom>
-            <h2>Hábitos</h2>
-            <div>Hoje</div>
-            <h2>Histórico</h2>
+            <h2 onClick={() => navigate('/habitos')}>Hábitos</h2>
+            <div>
+            <CircularProgressbar
+                value={percentage}
+                text={`${percentage}%`}
+                background
+                backgroundPadding={6}
+                styles={buildStyles({
+                backgroundColor: `${secondaryColor}`,
+                textColor: "#fff",
+                pathColor: "#fff",
+                trailColor: "transparent"
+                })}
+            />
+            </div>
+            <h2 onClick={() => navigate('/historico')}>Histórico</h2>
         </Bottom>
     )
 }
@@ -31,14 +54,11 @@ const Bottom = styled.div`
     }
 
     div {
-        color: #FFFFFF;
-        background-color: ${secondaryColor};
-        height: 90px;
-        width: 90px;
+        height: 110px;
+        width: 110px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 100%;
-        margin-bottom: 40px;
+        margin-bottom: 50px;
     }
 `

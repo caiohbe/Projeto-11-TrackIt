@@ -20,11 +20,7 @@ function HistoryPage() {
 export default HistoryPage
 
 const History = styled.div`
-    background-color: #E5E5E5;
-    width: 100vw;
-    height: 100vh;
     margin-top: 70px;    
-    margin-bottom: 70px;
     font-family: 'Lexend Deca';
 `
 
