@@ -15,10 +15,10 @@ function Footer() {
     return (
         <Bottom>
             <h2 onClick={() => navigate('/habitos')}>Hábitos</h2>
-            <div>
-            <CircularProgressbar
+            <div onClick={() => navigate('/hoje')}>
+            <CircularProgressbar 
                 value={percentage}
-                text={`${percentage}%`}
+                text={'Hoje'}
                 background
                 backgroundPadding={6}
                 styles={buildStyles({
