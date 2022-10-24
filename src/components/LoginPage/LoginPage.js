@@ -3,18 +3,18 @@ import styled from 'styled-components'
 import { secondaryColor, disabled } from '../../constants/colors'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { ThreeDots } from 'react-loader-spinner'
 import 'react-loader-spinner'
 import apiURL from '../../constants/URL'
-
-
+import { AuthContext } from '../../contexts/auth'
 
 function LoginPage({setToken}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
     const [loginText, setLoginText] = useState('Entrar')
+
+    const { setImage } = useContext(AuthContext)
 
     const navigate = useNavigate()
 
@@ -39,6 +39,7 @@ function LoginPage({setToken}) {
         .post(`${apiURL}/auth/login`, {email, password})
         .then((user) => {
             setToken(user.data.token)
+            setImage(user.data.image)
             navigate('/hoje')
         })
         .catch((err) => {

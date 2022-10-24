@@ -1,12 +1,16 @@
 import styled from "styled-components"
 import { mainColor } from "../../constants/colors"
 import trackIt from "../../assets/images/trackIt.png"
+import React, { useContext } from "react"
+import { AuthContext } from '../../contexts/auth'
 
 function Header() {
+    const { image } = useContext(AuthContext)
+
     return (
         <Top>
             <img src={trackIt} alt='logo'/>
-            <img className="perfilImage" src='https://www.clipartkey.com/mpngs/m/198-1988954_staff-profile-photo-facebook-blank-profile-picture-male.png' alt="userImage" />
+            <img className="perfilImage" src={image} alt="userImage" />
         </Top>
     )
 }
